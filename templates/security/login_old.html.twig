@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+    <div class="narrow">
+        <div class="card">
+            <h1>Connexion</h1>
+
+            {% if error %}
+                <div class="flash flash-error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            {% if app.user %}
+                <div class="flash">
+                    Vous êtes déjà connecté(e) en tant que {{ app.user.userIdentifier }}. <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                </div>
+            {% endif %}
+
+            <form class="form" method="post">
+                <div>
+                    <label for="username">Email</label>
+                    <input type="email" value="{{ last_username }}" id="username" name="_username" autocomplete="email" required autofocus>
+                </div>
+
+                <div>
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="_password" autocomplete="current-password" required>
+                </div>
+
+                {# Jeton de sécurité obligatoire pour valider le formulaire #}
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <button type="submit">Se connecter</button>
+            </form>
+
+            <p class="form-footer">Pas encore de compte ? <a href="{{ path('app_register') }}">Créer un compte</a></p>
+        </div>
+    </div>
+{% endblock %}

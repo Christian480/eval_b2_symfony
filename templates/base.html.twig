@@ -28,12 +28,18 @@
                 <a class="logo" href="{{ path('app_home') }}">Agenda<span>.</span></a>
                 <nav class="nav">
                     <a href="{{ path('app_home') }}">Événements</a>
+                    
                     <a href="{{ path('app_validate') }}">
                         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
                         Validation
                     </a>
-                    <a href="{{ path('app_login') }}">Connexion</a>
-                    <a class="btn btn-small" href="{{ path('app_register') }}">Créer un compte</a>
+                    
+                    {% if app.user %}
+                        <a class="btn btn-small" style="background-color: #6c757d; color: white;" href="{{ path('app_logout') }}">Se déconnecter</a>
+                    {% else %}
+                        <a href="{{ path('app_login') }}">Connexion</a>
+                        <a class="btn btn-small" href="{{ path('app_register') }}">Créer un compte</a>
+                    {% endif %}
                 </nav>
             </div>
         </header>

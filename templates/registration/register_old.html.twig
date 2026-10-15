@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un compte{% endblock %}
+
+{% block body %}
+    <div class="narrow">
+        <div class="card">
+            <h1>Créer un compte</h1>
+
+            {# Affichage des erreurs globales du formulaire #}
+            {{ form_errors(registrationForm) }}
+
+            {# On démarre le formulaire en lui appliquant la classe CSS du prof #}
+            {{ form_start(registrationForm, {'attr': {'class': 'form'}}) }}
+                
+                <div>
+                    {{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'required'}}) }}
+                    {{ form_widget(registrationForm.email) }}
+                    <div style="color: red; font-size: 0.9em; margin-bottom: 10px;">
+                        {{ form_errors(registrationForm.email) }}
+                    </div>
+                </div>
+
+                <div>
+                    {{ form_label(registrationForm.plainPassword, 'Mot de passe', {'label_attr': {'class': 'required'}}) }}
+                    {{ form_widget(registrationForm.plainPassword) }}
+                    <div class="help-text">6 caractères minimum.</div>
+                    <div style="color: red; font-size: 0.9em; margin-bottom: 10px;">
+                        {{ form_errors(registrationForm.plainPassword) }}
+                    </div>
+                </div>
+
+                {# Symfony génère souvent une case "Accepter les conditions" (agreeTerms) par défaut #}
+                {# On l'ajoute discrètement au cas où elle est requise par le RegistrationFormType #}
+                {% if registrationForm.agreeTerms is defined %}
+                    <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center;">
+                        {{ form_widget(registrationForm.agreeTerms) }}
+                        {{ form_label(registrationForm.agreeTerms, 'J\'accepte les conditions d\'utilisation') }}
+                    </div>
+                {% endif %}
+
+                <button type="submit">Créer mon compte</button>
+            
+            {{ form_end(registrationForm) }}
+
+            <p class="form-footer">Déjà inscrit ? <a href="{{ path('app_login') }}">Se connecter</a></p>
+        </div>
+    </div>
+{% endblock %}

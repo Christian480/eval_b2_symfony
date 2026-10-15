@@ -14,14 +14,13 @@
 
     <div class="section-head">
         <h2>À venir</h2>
-        <ul class="legend">
-            <li><a class="active" href="{{ path('app_home') }}">Toutes</a></li>
-            <li class="cat-concert"><a href="{{ path('app_home', {categorie: 'concert'}) }}">Concert</a></li>
-            <li class="cat-conference"><a href="{{ path('app_home', {categorie: 'conference'}) }}">Conférence</a></li>
-            <li class="cat-atelier"><a href="{{ path('app_home', {categorie: 'atelier'}) }}">Atelier</a></li>
-            <li class="cat-sport"><a href="{{ path('app_home', {categorie: 'sport'}) }}">Sport</a></li>
-        </ul>
-    </div>
+      <ul class="legend">
+    <li><a class="{% if not currentCategory %}active{% endif %}" href="{{ path('app_home') }}">Toutes</a></li>
+    <li class="cat-concert"><a class="{% if currentCategory == 'Concert' %}active{% endif %}" href="{{ path('app_home', {categorie: 'Concert'}) }}">Concert</a></li>
+    <li class="cat-conference"><a class="{% if currentCategory == 'Conférence' %}active{% endif %}" href="{{ path('app_home', {categorie: 'Conférence'}) }}">Conférence</a></li>
+    <li class="cat-atelier"><a class="{% if currentCategory == 'Atelier' %}active{% endif %}" href="{{ path('app_home', {categorie: 'Atelier'}) }}">Atelier</a></li>
+    <li class="cat-sport"><a class="{% if currentCategory == 'Sport' %}active{% endif %}" href="{{ path('app_home', {categorie: 'Sport'}) }}">Sport</a></li>
+</ul>
 
     <ul class="event-list">
         {% for event in events %}
@@ -29,8 +28,11 @@
             
             <li class="event-card cat-{{ css_cat }}">
                 <div class="event-media">
-                    {# Image en dur temporaire avant de gérer l'upload #}
-                    <img class="event-image" src="{{ asset('images/concert.jpg') }}" alt="Image de l'événement">
+                   {% if event.image %}
+    <img class="event-image" src="{{ asset('images/' ~ event.image) }}" alt="{{ event.title }}">
+{% else %}
+    <img class="event-image" src="{{ asset('images/' ~ css_cat ~ '.jpg') }}" alt="{{ event.title }}">
+{% endif %}
                     
                     <div class="event-date">
                         <span class="day">{{ event.date|date('d') }}</span>
