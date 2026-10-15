@@ -24,63 +24,29 @@
     </div>
 
     <ul class="event-list">
-        <li class="event-card cat-concert">
-            <div class="event-media">
-                <img class="event-image" src="{{ asset('images/concert.jpg') }}" alt="">
-                <div class="event-date"><span class="day">07</span><span class="month">nov.</span></div>
-                <span class="badge">Concert</span>
-            </div>
-            <h3 class="event-title"><a href="{{ path('app_event_show', {id: 1}) }}">Soirée jazz au Kiosque</a></h3>
-            <span class="muted">07/11/2026 · 20h30</span>
-        </li>
-        <li class="event-card cat-conference">
-            <div class="event-media">
-                <img class="event-image" src="{{ asset('images/conference.jpg') }}" alt="">
-                <div class="event-date"><span class="day">12</span><span class="month">nov.</span></div>
-                <span class="badge">Conférence</span>
-            </div>
-            <h3 class="event-title"><a href="{{ path('app_event_show', {id: 2}) }}">L'IA expliquée simplement</a></h3>
-            <span class="muted">12/11/2026 · 18h00</span>
-        </li>
-        <li class="event-card cat-atelier">
-            <div class="event-media">
-                <img class="event-image" src="{{ asset('images/atelier.jpg') }}" alt="">
-                <div class="event-date"><span class="day">21</span><span class="month">nov.</span></div>
-                <span class="badge">Atelier</span>
-            </div>
-            <h3 class="event-title"><a href="{{ path('app_event_show', {id: 3}) }}">Initiation à la poterie</a></h3>
-            <span class="muted">21/11/2026 · 14h00</span>
-        </li>
-        <li class="event-card cat-sport">
-            <div class="event-media">
-                <img class="event-image" src="{{ asset('images/sport.jpg') }}" alt="">
-                <div class="event-date"><span class="day">29</span><span class="month">nov.</span></div>
-                <span class="badge">Sport</span>
-            </div>
-            <h3 class="event-title"><a href="{{ path('app_event_show', {id: 4}) }}">Semi-marathon de la ville</a></h3>
-            <span class="muted">29/11/2026 · 09h00</span>
-        </li>
-        <li class="event-card cat-concert">
-            <div class="event-media">
-                <img class="event-image" src="{{ asset('images/rock.jpg') }}" alt="">
-                <div class="event-date"><span class="day">05</span><span class="month">déc.</span></div>
-                <span class="badge">Concert</span>
-            </div>
-            <h3 class="event-title"><a href="{{ path('app_event_show', {id: 5}) }}">Rock indé au Sous-Sol</a></h3>
-            <span class="muted">05/12/2026 · 21h00</span>
-        </li>
-        <li class="event-card cat-sport">
-            <div class="event-media">
-                <img class="event-image" src="{{ asset('images/escalade.jpg') }}" alt="">
-                <div class="event-date"><span class="day">13</span><span class="month">déc.</span></div>
-                <span class="badge">Sport</span>
-            </div>
-            <h3 class="event-title"><a href="{{ path('app_event_show', {id: 6}) }}">Escalade en famille</a></h3>
-            <span class="muted">13/12/2026 · 10h00</span>
-        </li>
+        {% for event in events %}
+            {% set css_cat = event.category|lower|replace({'é': 'e'}) %}
+            
+            <li class="event-card cat-{{ css_cat }}">
+                <div class="event-media">
+                    {# Image en dur temporaire avant de gérer l'upload #}
+                    <img class="event-image" src="{{ asset('images/concert.jpg') }}" alt="Image de l'événement">
+                    
+                    <div class="event-date">
+                        <span class="day">{{ event.date|date('d') }}</span>
+                        <span class="month">{{ event.date|date('M')|trim('.') }}</span>
+                    </div>
+                    
+                    <span class="badge">{{ event.category }}</span>
+                </div>
+                
+                <h3 class="event-title">
+                    <a href="{{ path('app_event_show', {id: event.id}) }}">{{ event.title }}</a>
+                </h3>
+                <span class="muted">{{ event.date|date('d/m/Y · H\\hi') }}</span>
+            </li>
+        {% else %}
+            <p class="empty">Aucun événement à venir pour le moment.</p>
+        {% endfor %}
     </ul>
-
-    {# Si aucun événement :
-    <p class="empty">Aucun événement à venir pour le moment.</p>
-    #}
 {% endblock %}
